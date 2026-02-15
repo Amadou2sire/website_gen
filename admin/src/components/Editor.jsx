@@ -37,8 +37,9 @@ const Editor = () => {
     });
     const [selectedBlockId, setSelectedBlockId] = useState(null);
     const [viewMode, setViewMode] = useState('desktop');
+    const [sidebarTab, setSidebarTab] = useState('library'); // 'library' or 'settings'
 
-    // Panel state for responsiveness
+    // Sidebar state for responsiveness
     const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 1024);
 
     useEffect(() => {
@@ -114,8 +115,6 @@ const Editor = () => {
         }
     };
 
-    const selectedBlock = formData.blocks.find(b => b.id === selectedBlockId);
-
     return (
         <div className="flex h-screen flex-col overflow-hidden bg-background-light dark:bg-background-dark font-display relative">
             {/* Top Nav Bar */}
@@ -148,12 +147,12 @@ const Editor = () => {
                         ))}
                     </div>
 
-                    {/* Unified Panel Toggle */}
+                    {/* Sidebar Toggle */}
                     <button
                         onClick={() => setSidebarOpen(!sidebarOpen)}
                         className={`lg:hidden flex size-9 md:size-10 items-center justify-center rounded-lg border transition-all ${sidebarOpen ? 'bg-primary border-primary text-white' : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500'}`}
                     >
-                        <span className="material-symbols-outlined !text-xl md:!text-2xl">{sidebarOpen ? 'close_fullscreen' : 'construction'}</span>
+                        <span className="material-symbols-outlined !text-xl md:!text-2xl">{sidebarOpen ? 'close_fullscreen' : 'menu'}</span>
                     </button>
 
                     <button onClick={handleSubmit} className="flex items-center gap-2 rounded-lg bg-primary px-3 md:px-5 py-2 text-xs md:text-sm font-bold text-white hover:bg-blue-700 shadow-lg shadow-blue-500/20 active:scale-[0.98] transition-all">
@@ -164,103 +163,80 @@ const Editor = () => {
             </header>
 
             <main className="flex flex-1 overflow-hidden relative">
-                {/* Unified Sidebar: Library + Settings */}
+                {/* Simplified Sidebar: Block Library & Page Settings */}
                 <aside className={`
                     absolute lg:relative z-30 flex flex-col h-full bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transition-all duration-300 shadow-2xl lg:shadow-none
-                    ${sidebarOpen ? 'translate-x-0 w-80' : '-translate-x-full w-0 lg:w-0'}
+                    ${sidebarOpen ? 'translate-x-0 w-72' : '-translate-x-full w-0 lg:w-0'}
                 `}>
-                    {/* Top Section: Block Library (Fixed Height) */}
-                    <div className="h-[40%] flex flex-col border-b border-slate-200 dark:border-slate-800 min-h-[300px]">
-                        <div className="p-4 border-b border-slate-50 dark:border-slate-800 shrink-0 bg-slate-50/50 dark:bg-slate-900/50">
-                            <h2 className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Block Library</h2>
-                        </div>
-                        <div className="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar">
-                            {Object.entries(BLOCK_TYPES).map(([type, block]) => (
-                                <div
-                                    key={type}
-                                    onClick={() => handleAddBlock(type)}
-                                    className="group cursor-pointer rounded-xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 shadow-sm hover:border-primary hover:shadow-md transition-all active:scale-[0.98] flex items-center gap-4"
-                                >
-                                    <div className="size-10 shrink-0 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-center group-hover:bg-primary/5 transition-colors">
-                                        <span className="material-symbols-outlined text-xl text-slate-300 group-hover:text-primary transition-all">{block.icon}</span>
-                                    </div>
-                                    <div className="min-w-0">
-                                        <h3 className="text-sm font-bold text-slate-700 dark:text-slate-200 truncate">{block.label}</h3>
-                                        <p className="text-[10px] text-slate-400 truncate">{block.desc}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                    {/* Sidebar Tabs */}
+                    <div className="flex border-b border-slate-100 dark:border-slate-800 shrink-0 bg-slate-50/50 dark:bg-slate-900/50">
+                        <button
+                            onClick={() => setSidebarTab('library')}
+                            className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest transition-colors ${sidebarTab === 'library' ? 'text-primary border-b-2 border-primary' : 'text-slate-400 hover:text-slate-600'}`}
+                        >
+                            Blocks
+                        </button>
+                        <button
+                            onClick={() => setSidebarTab('settings')}
+                            className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest transition-colors ${sidebarTab === 'settings' ? 'text-primary border-b-2 border-primary' : 'text-slate-400 hover:text-slate-600'}`}
+                        >
+                            Page
+                        </button>
                     </div>
 
-                    {/* Bottom Section: Settings (Contextual) */}
-                    <div className="flex-1 flex flex-col min-h-0 bg-slate-50/10">
-                        <div className="p-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex items-center justify-between shrink-0">
-                            <h2 className="text-xs font-black uppercase tracking-widest text-slate-400">
-                                {selectedBlockId ? 'Block Configuration' : 'Page Settings'}
-                            </h2>
-                            {selectedBlockId && (
-                                <button onClick={() => setSelectedBlockId(null)} className="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors group">
-                                    <span className="material-symbols-outlined !text-lg text-slate-400 group-hover:text-slate-600">close</span>
-                                </button>
-                            )}
-                        </div>
-
-                        <div className="flex-1 overflow-y-auto p-5 custom-scrollbar">
-                            {!selectedBlockId ? (
-                                <section className="space-y-6">
-                                    <div className="space-y-4">
-                                        <div className="space-y-1.5">
-                                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 font-bold">Page Title</label>
-                                            <input
-                                                className="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm py-2 px-3 focus:ring-1 focus:ring-primary outline-none transition-all"
-                                                type="text"
-                                                value={formData.title}
-                                                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                                placeholder="Enter page title..."
-                                            />
+                    <div className="flex-1 overflow-y-auto custom-scrollbar">
+                        {sidebarTab === 'library' ? (
+                            <div className="p-4 space-y-3">
+                                {Object.entries(BLOCK_TYPES).map(([type, block]) => (
+                                    <div
+                                        key={type}
+                                        onClick={() => handleAddBlock(type)}
+                                        className="group cursor-pointer rounded-xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 shadow-sm hover:border-primary hover:shadow-md transition-all active:scale-[0.98] flex items-center gap-4"
+                                    >
+                                        <div className="size-10 shrink-0 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-center group-hover:bg-primary/5 transition-colors">
+                                            <span className="material-symbols-outlined text-xl text-slate-300 group-hover:text-primary transition-all">{block.icon}</span>
                                         </div>
-                                        <div className="space-y-1.5">
-                                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 font-bold">SEO Description</label>
-                                            <textarea
-                                                className="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm py-2 px-3 h-20 focus:ring-1 focus:ring-primary outline-none transition-all resize-none"
-                                                placeholder="Briefly describe this page..."
-                                                value={formData.meta_description}
-                                                onChange={(e) => setFormData({ ...formData, meta_description: e.target.value })}
-                                            ></textarea>
-                                        </div>
-                                        <div className="flex items-center justify-between p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700">
-                                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-700 dark:text-slate-300">Published</p>
-                                            <button
-                                                onClick={() => setFormData({ ...formData, is_published: !formData.is_published })}
-                                                className={`relative h-5 w-9 rounded-full transition-colors ${formData.is_published ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-slate-700'}`}
-                                            >
-                                                <div className={`absolute top-0.5 left-0.5 size-4 rounded-full bg-white transition-transform ${formData.is_published ? 'translate-x-4' : 'translate-x-0'}`}></div>
-                                            </button>
+                                        <div className="min-w-0">
+                                            <h3 className="text-sm font-bold text-slate-700 dark:text-slate-200 truncate">{block.label}</h3>
+                                            <p className="text-[10px] text-slate-400 truncate">{block.desc}</p>
                                         </div>
                                     </div>
-                                </section>
-                            ) : (
-                                <div className="space-y-6">
-                                    <div className="flex items-center gap-2 pb-4 border-b border-slate-100 dark:border-slate-800">
-                                        <span className="material-symbols-outlined text-primary !text-lg shrink-0">{BLOCK_TYPES[selectedBlock.type].icon}</span>
-                                        <span className="text-sm font-bold uppercase tracking-tight truncate">{BLOCK_TYPES[selectedBlock.type].label}</span>
+                                ))}
+                            </div>
+                        ) : (
+                            <section className="p-5 space-y-6">
+                                <div className="space-y-4">
+                                    <div className="space-y-1.5">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 font-bold">Page Title</label>
+                                        <input
+                                            className="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm py-2 px-3 focus:ring-1 focus:ring-primary outline-none transition-all"
+                                            type="text"
+                                            value={formData.title}
+                                            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                                            placeholder="Enter page title..."
+                                        />
                                     </div>
-
-                                    {(() => {
-                                        const BlockComp = BLOCK_TYPES[selectedBlock.type].component;
-                                        return <BlockComp
-                                            data={selectedBlock.data}
-                                            onChange={(newData) => handleBlockDataChange(selectedBlock.id, newData)}
-                                        />;
-                                    })()}
-
-                                    <button onClick={() => setSelectedBlockId(null)} className="w-full mt-4 rounded-lg border-2 border-primary text-primary py-2 text-[10px] font-black uppercase tracking-widest hover:bg-primary hover:text-white transition-all">
-                                        Done Configuring
-                                    </button>
+                                    <div className="space-y-1.5">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 font-bold">SEO Description</label>
+                                        <textarea
+                                            className="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm py-2 px-3 h-24 focus:ring-1 focus:ring-primary outline-none transition-all resize-none"
+                                            placeholder="Briefly describe this page..."
+                                            value={formData.meta_description}
+                                            onChange={(e) => setFormData({ ...formData, meta_description: e.target.value })}
+                                        ></textarea>
+                                    </div>
+                                    <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700">
+                                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-700 dark:text-slate-300">Published</p>
+                                        <button
+                                            onClick={() => setFormData({ ...formData, is_published: !formData.is_published })}
+                                            className={`relative h-5 w-9 rounded-full transition-colors ${formData.is_published ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-slate-700'}`}
+                                        >
+                                            <div className={`absolute top-0.5 left-0.5 size-4 rounded-full bg-white transition-transform ${formData.is_published ? 'translate-x-4' : 'translate-x-0'}`}></div>
+                                        </button>
+                                    </div>
                                 </div>
-                            )}
-                        </div>
+                            </section>
+                        )}
                     </div>
                 </aside>
 
@@ -278,59 +254,99 @@ const Editor = () => {
                         {formData.blocks.length === 0 ? (
                             <div className="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-2xl p-10 md:p-20 text-center bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm">
                                 <span className="material-symbols-outlined !text-4xl md:!text-6xl text-slate-200 dark:text-slate-700 mb-4 block">draft_orders</span>
-                                <h3 className="text-lg md:text-xl font-bold text-slate-400">Clean Slate</h3>
-                                <p className="text-xs md:text-sm text-slate-400 mt-2">Pick a block from the left tools to start building your story.</p>
+                                <h3 className="text-lg md:text-xl font-bold text-slate-400">Empty Canvas</h3>
+                                <p className="text-xs md:text-sm text-slate-400 mt-2">Pick a block from the tools to start building.</p>
                                 <button onClick={() => setSidebarOpen(true)} className="mt-6 lg:hidden bg-primary text-white px-6 py-2 rounded-lg text-sm font-bold shadow-lg shadow-primary/20">Open Tools</button>
                             </div>
                         ) : (
-                            <div className="space-y-6 md:space-y-8 pb-32">
+                            <div className="space-y-6 md:space-y-12 pb-32">
                                 {formData.blocks.map((block, idx) => (
-                                    <div
-                                        key={block.id}
-                                        onClick={(e) => { e.stopPropagation(); setSelectedBlockId(block.id); setSidebarOpen(true); }}
-                                        className={`relative rounded-xl transition-all ${selectedBlockId === block.id
-                                            ? 'ring-2 ring-primary bg-white dark:bg-slate-900 shadow-2xl scale-[1.01] z-10'
-                                            : 'hover:ring-2 hover:ring-slate-300 dark:hover:ring-slate-700 bg-white/80 dark:bg-slate-900/80 grayscale-[0.2]'
-                                            }`}
-                                    >
-                                        {/* Block Toolbar */}
-                                        {selectedBlockId === block.id && (
-                                            <div className="absolute -top-12 left-0 flex items-center gap-1 rounded-lg bg-primary p-1 text-white shadow-xl z-20 animate-in fade-in slide-in-from-bottom-2 duration-200">
-                                                <button className="flex h-8 w-8 items-center justify-center rounded hover:bg-white/20 transition-colors cursor-grab">
-                                                    <span className="material-symbols-outlined !text-[18px]">drag_indicator</span>
-                                                </button>
-                                                <div className="h-4 w-px bg-white/30 mx-1"></div>
-                                                <span className="px-2 text-[10px] font-black uppercase tracking-widest hidden xs:inline">{BLOCK_TYPES[block.type].label}</span>
-                                                <div className="h-4 w-px bg-white/30 mx-1"></div>
-                                                <button
-                                                    onClick={(e) => { e.stopPropagation(); handleMoveBlock(idx, -1); }}
-                                                    disabled={idx === 0}
-                                                    className="flex h-8 w-8 items-center justify-center rounded hover:bg-white/20 disabled:opacity-30"
-                                                >
-                                                    <span className="material-symbols-outlined !text-[18px]">arrow_upward</span>
-                                                </button>
-                                                <button
-                                                    onClick={(e) => { e.stopPropagation(); handleMoveBlock(idx, 1); }}
-                                                    disabled={idx === formData.blocks.length - 1}
-                                                    className="flex h-8 w-8 items-center justify-center rounded hover:bg-white/20 disabled:opacity-30"
-                                                >
-                                                    <span className="material-symbols-outlined !text-[18px]">arrow_downward</span>
-                                                </button>
-                                                <button
-                                                    onClick={(e) => { e.stopPropagation(); handleRemoveBlock(block.id); }}
-                                                    className="flex h-8 w-8 items-center justify-center rounded hover:bg-red-500 transition-colors"
-                                                >
-                                                    <span className="material-symbols-outlined !text-[18px]">delete</span>
-                                                </button>
-                                            </div>
-                                        )}
+                                    <div key={block.id} className="group/block relative">
+                                        <div
+                                            onClick={(e) => { e.stopPropagation(); setSelectedBlockId(selectedBlockId === block.id ? null : block.id); }}
+                                            className={`relative rounded-xl transition-all ${selectedBlockId === block.id
+                                                ? 'ring-4 ring-primary bg-white dark:bg-slate-900 shadow-2xl'
+                                                : 'hover:ring-2 hover:ring-slate-300 dark:hover:ring-slate-700 bg-white/80 dark:bg-slate-900/80 grayscale-[0.2]'
+                                                }`}
+                                        >
+                                            {/* Block Toolbar */}
+                                            {selectedBlockId === block.id && (
+                                                <div className="absolute -top-12 left-0 flex items-center gap-1 rounded-lg bg-primary p-1 text-white shadow-xl z-20 animate-in fade-in slide-in-from-bottom-2 duration-200">
+                                                    <button className="flex h-8 w-8 items-center justify-center rounded hover:bg-white/20 transition-colors cursor-grab">
+                                                        <span className="material-symbols-outlined !text-[18px]">drag_indicator</span>
+                                                    </button>
+                                                    <div className="h-4 w-px bg-white/30 mx-1"></div>
+                                                    <span className="px-2 text-[10px] font-black uppercase tracking-widest">{BLOCK_TYPES[block.type].label}</span>
+                                                    <div className="h-4 w-px bg-white/30 mx-1"></div>
+                                                    <button
+                                                        onClick={(e) => { e.stopPropagation(); handleMoveBlock(idx, -1); }}
+                                                        disabled={idx === 0}
+                                                        className="flex h-8 w-8 items-center justify-center rounded hover:bg-white/20 disabled:opacity-30"
+                                                    >
+                                                        <span className="material-symbols-outlined !text-[18px]">arrow_upward</span>
+                                                    </button>
+                                                    <button
+                                                        onClick={(e) => { e.stopPropagation(); handleMoveBlock(idx, 1); }}
+                                                        disabled={idx === formData.blocks.length - 1}
+                                                        className="flex h-8 w-8 items-center justify-center rounded hover:bg-white/20 disabled:opacity-30"
+                                                    >
+                                                        <span className="material-symbols-outlined !text-[18px]">arrow_downward</span>
+                                                    </button>
+                                                    <button
+                                                        onClick={(e) => { e.stopPropagation(); handleRemoveBlock(block.id); }}
+                                                        className="flex h-8 w-8 items-center justify-center rounded hover:bg-red-500 transition-colors"
+                                                    >
+                                                        <span className="material-symbols-outlined !text-[18px]">delete</span>
+                                                    </button>
+                                                </div>
+                                            )}
 
-                                        <div className="p-4 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden min-h-[100px] flex items-center justify-center cursor-pointer">
-                                            <div className="text-center opacity-70 group-hover:opacity-100 transition-opacity">
-                                                <span className={`material-symbols-outlined !text-3xl mb-1 ${selectedBlockId === block.id ? 'text-primary' : 'text-slate-400'}`}>{BLOCK_TYPES[block.type].icon}</span>
-                                                <p className="text-[10px] font-black uppercase tracking-widest">{BLOCK_TYPES[block.type].label}</p>
+                                            <div className="p-8 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden min-h-[120px] flex items-center justify-center cursor-pointer">
+                                                <div className="text-center opacity-70 group-hover/block:opacity-100 transition-opacity">
+                                                    <span className={`material-symbols-outlined !text-4xl mb-2 ${selectedBlockId === block.id ? 'text-primary' : 'text-slate-400'}`}>{BLOCK_TYPES[block.type].icon}</span>
+                                                    <p className="text-sm font-black uppercase tracking-widest">{BLOCK_TYPES[block.type].label}</p>
+                                                    {!selectedBlockId && <p className="text-[10px] mt-2 italic text-slate-400 font-bold">CLICK TO EDIT CONTENT</p>}
+                                                </div>
                                             </div>
                                         </div>
+
+                                        {/* Inline Block Configuration - Only show when selected */}
+                                        {selectedBlockId === block.id && (
+                                            <div className="mt-4 p-6 bg-white dark:bg-slate-900 rounded-2xl border-2 border-primary shadow-2xl animate-in fade-in zoom-in-95 duration-200 z-10 relative">
+                                                <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100 dark:border-slate-800">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="size-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                                                            <span className="material-symbols-outlined text-primary !text-lg">{BLOCK_TYPES[block.type].icon}</span>
+                                                        </div>
+                                                        <h3 className="text-sm font-black uppercase tracking-widest text-slate-700 dark:text-slate-200">
+                                                            {BLOCK_TYPES[block.type].label} Settings
+                                                        </h3>
+                                                    </div>
+                                                    <button
+                                                        onClick={() => setSelectedBlockId(null)}
+                                                        className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest text-slate-500 hover:bg-primary hover:text-white transition-all shadow-sm"
+                                                    >
+                                                        Save & Close
+                                                    </button>
+                                                </div>
+
+                                                <div className="max-w-3xl mx-auto py-2">
+                                                    {(() => {
+                                                        const BlockComp = BLOCK_TYPES[block.type].component;
+                                                        return <BlockComp
+                                                            data={block.data}
+                                                            onChange={(newData) => handleBlockDataChange(block.id, newData)}
+                                                        />;
+                                                    })()}
+                                                </div>
+
+                                                <div className="mt-8 pt-4 border-t border-slate-50 dark:border-slate-800 text-center">
+                                                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+                                                        Changes are saved automatically to the canvas
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 ))}
                             </div>
@@ -338,13 +354,13 @@ const Editor = () => {
 
                         {/* New Block Dropzone */}
                         <div
-                            onClick={() => setSidebarOpen(true)}
-                            className="mt-8 group relative flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 py-10 md:py-12 transition-all hover:border-primary hover:bg-white dark:hover:bg-slate-900"
+                            onClick={() => { setSidebarOpen(true); setSidebarTab('library'); }}
+                            className="mt-8 group relative flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 py-12 transition-all hover:border-primary hover:bg-white dark:hover:bg-slate-900"
                         >
-                            <div className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 transition-all group-hover:bg-primary group-hover:text-white shadow-sm">
+                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 transition-all group-hover:bg-primary group-hover:text-white shadow-sm">
                                 <span className="material-symbols-outlined">add</span>
                             </div>
-                            <p className="mt-4 text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-primary transition-colors px-4 text-center">Add block to grow page</p>
+                            <p className="mt-4 text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-primary transition-colors px-4 text-center">Tap to explore block library</p>
                         </div>
                     </div>
                 </section>
