@@ -1,10 +1,74 @@
-<div class="banner-block py-3 text-center font-medium"
-    style="background-color: {{ data.bgColor }}; color: {{ data.textColor }};">
-    <div class="container mx-auto px-4">
-        {% if data.link %}
-        <a href="{{ data.link }}" class="hover:underline">{{ data.text }}</a>
-        {% else %}
-        {{ data.text }}
+<div id="banner-{{ range(1, 1000) | random }}"
+    class="banner-block relative overflow-hidden transition-all duration-500 {{ 'backdrop-blur-md' if data.isGlassmorphism }}"
+    style="background-color: {{ data.bgColor or '#3b82f6' }}; color: {{ data.textColor or '#ffffff' }}; 
+            {% if data.image_url %} background-image: url('{{ data.image_url }}'); background-size: cover; background-position: center; {% endif %}">
+
+    {# Image Overlay #}
+    {% if data.image_url %}
+    <div class="absolute inset-0 z-0" style="background-color: rgba(0,0,0, {{ data.overlay_opacity or 0.4 }});"></div>
+    {% endif %}
+
+    <div
+        class="container mx-auto px-4 py-3 relative z-10 flex items-center {{ 'justify-center text-center' if data.alignment == 'center' or not data.alignment else 'justify-start text-left' }}">
+
+        <div class="flex flex-wrap items-center gap-2 md:gap-4 ml-8 md:ml-0">
+            {# Badge #}
+            {% if data.badge %}
+            <span
+                class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-widest {{ 'animate-pulse' if data.hasPulsingBadge }}"
+                style="background-color: {{ data.textColor or '#ffffff' }}; color: {{ data.bgColor or '#3b82f6' }};">
+                {{ data.badge }}
+            </span>
+            {% endif %}
+
+            {# Text & Link #}
+            <div class="text-sm md:text-base font-bold tracking-tight">
+                {% if data.link %}
+                <a href="{{ data.link }}"
+                    class="group inline-flex items-center gap-1.5 hover:opacity-80 transition-opacity">
+                    {{ data.text }}
+                    <span
+                        class="material-symbols-outlined !text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </a>
+                {% else %}
+                {{ data.text }}
+                {% endif %}
+            </div>
+        </div>
+
+        {# Dismiss Button #}
+        {% if data.isDismissible %}
+        <button onclick="this.closest('.banner-block').style.display='none'"
+            class="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+            aria-label="Close banner">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
         {% endif %}
     </div>
 </div>
+
+<style>
+    .banner-block {
+        min-height: 48px;
+    }
+
+    .animate-pulse {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulse {
+
+        0%,
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        50% {
+            opacity: .8;
+            transform: scale(1.05);
+        }
+    }
+</style>
