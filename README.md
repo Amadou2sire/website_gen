@@ -2,7 +2,7 @@
 
 StaticCMS is a powerful, block-based landing page builder that generates optimized static HTML websites. It combines a modern React-based admin dashboard with a high-performance FastAPI backend.
 
-## 🚀 Features
+##  Features
 
 - **Block-Based Editor**: Build pages by stacking Hero, Features, CTA, Pricing, and Testimonial blocks.
 - **Unified API**: Standardized operations on port `8000`.
@@ -11,13 +11,13 @@ StaticCMS is a powerful, block-based landing page builder that generates optimiz
 - **SEO Ready**: Automatic slug generation, meta description management, and clean HTML output.
 - **Pro Slider**: High-end cinematic sliders powered by Swiper.js.
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 - **Backend**: FastAPI (Python), SQLAlchemy (SQLite), Jinja2 (Templating).
 - **Frontend**: React (Vite), Tailwind CSS, Lucide Icons.
 - **Storage**: SQLite for content, `/output` for static assets.
 
-## 📦 Installation
+##  Installation
 
 ### Backend Setup
 1. Create a virtual environment:
@@ -46,7 +46,7 @@ StaticCMS is a powerful, block-based landing page builder that generates optimiz
    npm install
    ```
 
-## 🚥 How to Run
+##  How to Run
 
 ### 1. Start the Backend
 From the root directory:
@@ -60,12 +60,12 @@ From the `admin` directory:
 npm run dev
 ```
 
-## 📁 Project Structure
+##  Project Structure
 
 - `/backend`: FastAPI models, schemas, and API endpoints.
 - `/admin`: React source code for the dashboard.
 - `/output`: Target directory for the generated static site.
 - `cms.db`: SQLite database file.
 
-## 🔧 Port Standardization
+##  Port Standardization
 All components communicate via port **8000**. Ensure no other applications are using this port during development.

@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import HeroBlock from './blocks/HeroBlock';
 import TextBlock from './blocks/TextBlock';
 import FeaturesBlock from './blocks/FeaturesBlock';
+import FeaturesImageBlock from './blocks/FeaturesImageBlock';
 import CTABlock from './blocks/CTABlock';
 import BannerBlock from './blocks/BannerBlock';
 import PricingBlock from './blocks/PricingBlock';
@@ -17,7 +18,8 @@ const BLOCK_TYPES = {
     'hero': { component: HeroBlock, label: 'Hero Section', icon: 'view_headline', desc: 'Full-width header with CTA', defaultData: { headline: 'New Hero', subheadline: 'Subtitle here', cta_text: 'Learn More', cta_link: '#', headlineColor: '#111827', buttonColor: '#1337ec' } },
     'text': { component: TextBlock, label: 'Rich Text', icon: 'article', desc: 'Rich text and typography', defaultData: { content: '<p>Enter text here...</p>' } },
     'slider': { component: SliderBlock, label: 'Image Slider', icon: 'gallery_thumbnail', desc: 'Carousel of images', defaultData: { full_screen: true, slides: [{ headline: 'Welcome', subheadline: 'Discover our story', image_url: '', cta_text: 'Start Now', cta_link: '#' }] } },
-    'features': { component: FeaturesBlock, label: 'Features Grid', icon: 'grid_view', desc: '3-column highlight grid', defaultData: { features: [{ title: 'Feature 1', description: 'Description', icon: 'zap' }] } },
+    'features': { component: FeaturesBlock, label: 'Features Grid (Icons)', icon: 'grid_view', desc: 'Icon-based feature grid', defaultData: { features: [{ title: 'Feature 1', description: 'Description', icon: 'zap' }] } },
+    'features_image': { component: FeaturesImageBlock, label: 'Features Grid (Images)', icon: 'photo_library', desc: 'Image-based feature grid', defaultData: { section_title: '', section_subtitle: '', columns: 3, features: [{ title: 'Feature 1', description: 'Description', image_url: '' }] } },
     'cta': { component: CTABlock, label: 'Call to Action', icon: 'ads_click', desc: 'Conversion focused banner', defaultData: { headline: 'Ready to start?', subheadline: 'Join us today', button_text: 'Get Started', button_link: '#', bgColor: '#1337ec', textColor: '#ffffff' } },
     'banner': { component: BannerBlock, label: 'Promo Banner', icon: 'label', desc: 'Small announcement bar', defaultData: { text: 'Big News! Check out our latest update.', bgColor: '#1337ec', textColor: '#ffffff', link: '#' } },
     'pricing': { component: PricingBlock, label: 'Pricing Table', icon: 'payments', desc: 'Subscription model display', defaultData: { plans: [{ name: 'Basic', price: '$9', features: ['Feature A', 'Feature B'], isPopular: false, buttonText: 'Buy' }] } },

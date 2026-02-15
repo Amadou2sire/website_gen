@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import HeroBlock from './blocks/HeroBlock';
 import TextBlock from './blocks/TextBlock';
 import FeaturesBlock from './blocks/FeaturesBlock';
+import FeaturesImageBlock from './blocks/FeaturesImageBlock';
 import CTABlock from './blocks/CTABlock';
 import BannerBlock from './blocks/BannerBlock';
 import PricingBlock from './blocks/PricingBlock';
@@ -13,7 +14,8 @@ const BLOCK_TYPES = {
     'slider': { component: SliderBlock, label: 'Pro Slider', defaultData: { full_screen: true, slides: [{ headline: 'Welcome', subheadline: 'Discover our story', image_url: '', cta_text: 'Start Now', cta_link: '#' }] } },
     'hero': { component: HeroBlock, label: 'Hero Section', defaultData: { headline: 'New Hero', subheadline: 'Subtitle here', cta_text: 'Learn More', cta_link: '#', headlineColor: '#111827', buttonColor: '#2563eb', image_url: '' } },
     'text': { component: TextBlock, label: 'Rich Text', defaultData: { content: '<p>Enter text here...</p>' } },
-    'features': { component: FeaturesBlock, label: 'Features Grid', defaultData: { features: [{ title: 'Feature 1', description: 'Description', icon: 'zap' }] } },
+    'features': { component: FeaturesBlock, label: 'Features Grid (Icons)', defaultData: { features: [{ title: 'Feature 1', description: 'Description', icon: 'zap' }] } },
+    'features_image': { component: FeaturesImageBlock, label: 'Features Grid (Images)', defaultData: { section_title: '', section_subtitle: '', columns: 3, features: [{ title: 'Feature 1', description: 'Description', image_url: '' }] } },
     'cta': { component: CTABlock, label: 'Call to Action', defaultData: { headline: 'Ready to start?', subheadline: 'Join us today', button_text: 'Get Started', button_link: '#', bgColor: '#2563eb', textColor: '#ffffff' } },
     'banner': { component: BannerBlock, label: 'Promo Banner', defaultData: { text: 'Big News! Check out our latest update.', bgColor: '#3b82f6', textColor: '#ffffff', link: '#' } },
     'pricing': { component: PricingBlock, label: 'Pricing Table', defaultData: { plans: [{ name: 'Basic', price: '$9', features: ['Feature A', 'Feature B'], isPopular: false, buttonText: 'Buy' }] } },

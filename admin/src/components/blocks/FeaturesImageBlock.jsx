@@ -1,12 +1,12 @@
 import React from 'react';
-import { Plus, Trash, GripVertical, Sparkles } from 'lucide-react';
-import IconPicker from '../IconPicker';
+import { Plus, Trash, Sparkles } from 'lucide-react';
+import ImageUpload from '../ImageUpload';
 
-const FeaturesBlock = ({ data, onChange }) => {
+const FeaturesImageBlock = ({ data, onChange }) => {
     const features = data.features || [];
 
     const handleAddFeature = () => {
-        const newFeatures = [...features, { title: '', description: '', icon: 'zap' }];
+        const newFeatures = [...features, { title: '', description: '', image_url: '' }];
         onChange({ ...data, features: newFeatures });
     };
 
@@ -23,24 +23,24 @@ const FeaturesBlock = ({ data, onChange }) => {
 
     return (
         <div className="space-y-8 animate-in fade-in duration-500">
-            {/* Header / Intro */}
+            {/* Header */}
             <div className="flex items-center gap-2 mb-4">
-                <span className="material-symbols-outlined text-primary !text-sm">view_quilt</span>
-                <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400">Features Configuration</h4>
+                <span className="material-symbols-outlined text-primary !text-sm">photo_library</span>
+                <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400">Features Image Grid Configuration</h4>
             </div>
 
             {/* Column Selector */}
             <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Grid Columns</label>
                 <div className="flex gap-2">
-                    {[2, 3, 4, 5, 6].map(cols => (
+                    {[1, 2, 3, 4, 5, 6].map(cols => (
                         <button
                             key={cols}
                             type="button"
                             onClick={() => onChange({ ...data, columns: cols })}
                             className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${(data.columns || 3) === cols
-                                ? 'bg-primary text-white shadow-lg shadow-primary/20'
-                                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200'
+                                    ? 'bg-primary text-white shadow-lg shadow-primary/20'
+                                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200'
                                 }`}
                         >
                             {cols} Col
@@ -85,13 +85,12 @@ const FeaturesBlock = ({ data, onChange }) => {
                             <Trash size={14} />
                         </button>
 
-
                         <div className="space-y-6">
-                            {/* Icon Picker Integration */}
-                            <IconPicker
-                                value={feature.icon}
-                                onChange={(val) => handleFeatureChange(index, 'icon', val)}
-                                label={`Icon ${index + 1}`}
+                            {/* Image Upload */}
+                            <ImageUpload
+                                value={feature.image_url || ''}
+                                onChange={(url) => handleFeatureChange(index, 'image_url', url)}
+                                label={`Feature Image ${index + 1}`}
                             />
 
                             <div className="space-y-4">
@@ -120,7 +119,7 @@ const FeaturesBlock = ({ data, onChange }) => {
                     </div>
                 ))}
 
-                {/* Add New Feature Call to Action */}
+                {/* Add New Feature */}
                 <button
                     type="button"
                     onClick={handleAddFeature}
@@ -136,15 +135,15 @@ const FeaturesBlock = ({ data, onChange }) => {
                 </button>
             </div>
 
-            {/* Optimization Tip */}
+            {/* Tip */}
             <div className="bg-primary/5 border border-primary/10 rounded-xl p-4 flex items-start gap-4">
                 <div className="size-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                     <Sparkles className="text-primary" size={16} />
                 </div>
                 <div>
-                    <h5 className="text-[11px] font-black uppercase tracking-widest text-primary mb-1">UX Tip</h5>
+                    <h5 className="text-[11px] font-black uppercase tracking-widest text-primary mb-1">Design Tip</h5>
                     <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed font-bold">
-                        Keep your feature titles short (2-4 words) and descriptions concise for better mobile readability and a cleaner grid layout.
+                        Use high-quality images with consistent aspect ratios for a professional grid layout. Recommended size: 800x600px or 16:9 ratio.
                     </p>
                 </div>
             </div>
@@ -152,4 +151,4 @@ const FeaturesBlock = ({ data, onChange }) => {
     );
 };
 
-export default FeaturesBlock;
+export default FeaturesImageBlock;
