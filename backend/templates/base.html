@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr"
+    style="--brand-primary: {{ cta_color|default('#3b82f6') }}; --brand-hover: {{ cta_hover_color|default('#2563eb') }};">
 
 <head>
     <meta charset="UTF-8">
@@ -13,24 +14,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <style>
-        :root {
-            --brand-primary: {
-                    {
-                    cta_color|default('#3b82f6')
-                }
-            }
-
-            ;
-
-            --brand-hover: {
-                    {
-                    cta_hover_color|default('#2563eb')
-                }
-            }
-
-            ;
-        }
-
         body {
             font-family: 'Inter', sans-serif;
         }
@@ -108,8 +91,7 @@
                             class="dropdown-menu absolute hidden left-0 mt-0 w-48 bg-white/90 backdrop-blur-md border border-white/20 rounded-xl shadow-2xl z-50 overflow-hidden">
                             {% for child in item.children %}
                             <a href="{{ child.url }}"
-                                class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary hover-primary hover:text-white transition-colors border-b border-gray-100 last:border-0"
-                                style="--brand-primary: {{ cta_color|default('#3b82f6') }}">
+                                class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary hover-primary hover:text-white transition-colors border-b border-gray-100 last:border-0">
                                 {{ child.label }}
                             </a>
                             {% endfor %}
@@ -124,7 +106,7 @@
                 </nav>
 
                 {% if cta_text and cta_link %}
-                <a href="{{ cta_link }}" style="background-color: {{ cta_color|default('#3b82f6') }}"
+                <a href="{{ cta_link }}" style="background-color: var(--brand-primary)"
                     class="px-6 py-2.5 text-white rounded-full font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all text-sm">
                     {{ cta_text }}
                 </a>
@@ -166,8 +148,8 @@
 
                 {% if cta_text and cta_link %}
                 <div class="pt-4">
-                    <a href="{{ cta_link }}" style="background-color: {{ cta_color|default('#3b82f6') }}"
-                        class="block w-full text-center py-4 text-white rounded-2xl font-black shadow-xl hover-primary transition-all">
+                    <a href="{{ cta_link }}"
+                        class="block w-full text-center py-4 text-white rounded-2xl font-black shadow-xl bg-primary hover-primary transition-all">
                         {{ cta_text }}
                     </a>
                 </div>

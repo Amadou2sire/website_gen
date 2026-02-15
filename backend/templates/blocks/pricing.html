@@ -3,8 +3,8 @@
         <div
             class="grid grid-cols-1 md:grid-cols-{{ data.plans|length if data.plans|length < 4 else 3 }} gap-8 max-w-6xl mx-auto">
             {% for plan in data.plans %}
-            <div
-                class="pricing-card bg-white p-8 rounded-2xl shadow-lg border-2 {% if plan.isPopular %}border-blue-500 scale-105 z-10{% else %}border-transparent{% endif %} flex flex-col">
+            <div class="pricing-card bg-white p-8 rounded-2xl shadow-lg border-2 {% if plan.isPopular %}scale-105 z-10{% else %}border-transparent{% endif %} flex flex-col"
+                style="{% if plan.isPopular %}border-color: var(--brand-primary);{% endif %}">
                 {% if plan.isPopular %}
                 <span
                     class="bg-primary hover-primary text-white text-xs font-bold uppercase tracking-widest py-1 px-3 rounded-full self-start mb-4">Recommended</span>
