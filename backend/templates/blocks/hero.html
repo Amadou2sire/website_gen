@@ -1,0 +1,17 @@
+<div class="hero-block py-20 bg-gray-50 text-center">
+    <div class="container mx-auto px-4">
+        {% if data.image_url %}
+        <img src="{{ data.image_url }}" alt="Hero Image" class="mx-auto mb-8 rounded shadow-lg max-w-2xl">
+        {% endif %}
+        <h1 class="text-5xl font-bold mb-4" style="color: {{ data.headlineColor or '#111827' }};">{{ data.headline }}
+        </h1>
+        <p class="text-xl text-gray-600 mb-8">{{ data.subheadline }}</p>
+        {% if data.cta_text and data.cta_link %}
+        <a href="{{ data.cta_link }}"
+            class="inline-block text-white px-8 py-3 rounded-lg font-semibold transition hover:opacity-90 shadow-lg"
+            style="background-color: {{ data.buttonColor or '#2563eb' }};">
+            {{ data.cta_text }}
+        </a>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,10 @@
+<div class="banner-block py-3 text-center font-medium"
+    style="background-color: {{ data.bgColor }}; color: {{ data.textColor }};">
+    <div class="container mx-auto px-4">
+        {% if data.link %}
+        <a href="{{ data.link }}" class="hover:underline">{{ data.text }}</a>
+        {% else %}
+        {{ data.text }}
+        {% endif %}
+    </div>
+</div>

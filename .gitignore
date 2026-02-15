@@ -1,0 +1,29 @@
+# General
+.env
+cms.db
+*.log
+*.sqlite
+__pycache__/
+.pytest_cache/
+.DS_Store
+
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# Build/Output
+output/
+dist/
+build/
+admin/dist/
+
+# Dependencies
+node_modules/
+admin/node_modules/
+
+# Temp/Drafts
+temp_*.html
+temp_skills/
+.gemini/
+brain/

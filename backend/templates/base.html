@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <meta name="description" content="{{ meta_description }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Swiper.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .glass-header {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        /* Prevent gap between trigger and menu */
+        .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 0;
+            width: 100%;
+            height: 10px;
+        }
+
+        #mobile-menu.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 font-sans">
+    <header class="glass-header sticky top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 group">
+                {% if logo_url %}
+                <img src="{{ logo_url }}" alt="Logo" class="h-14 w-auto group-hover:scale-105 transition-transform">
+                {% else %}
+                <span
+                    class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">MySite</span>
+                {% endif %}
+            </a>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center gap-8">
+                <nav class="flex space-x-8 items-center">
+                    <a href="index.html"
+                        class="text-gray-600 hover:text-blue-600 font-semibold transition-colors">Home</a>
+                    {% for item in menu_items %}
+                    {% if item.children and item.children|length > 0 %}
+                    <div class="relative dropdown">
+                        <button
+                            class="flex items-center gap-1 text-gray-600 hover:text-blue-600 font-semibold py-2 transition-colors">
+                            {{ item.label }}
+                            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute hidden left-0 mt-0 w-48 bg-white/90 backdrop-blur-md border border-white/20 rounded-xl shadow-2xl z-50 overflow-hidden">
+                            {% for child in item.children %}
+                            <a href="{{ child.url }}"
+                                class="block px-4 py-3 text-sm text-gray-700 hover:bg-blue-600 hover:text-white transition-colors border-b border-gray-100 last:border-0">
+                                {{ child.label }}
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% else %}
+                    <a href="{{ item.url }}"
+                        class="text-gray-600 hover:text-blue-600 font-semibold transition-colors">{{ item.label }}</a>
+                    {% endif %}
+                    {% endfor %}
+                </nav>
+
+                {% if cta_text and cta_link %}
+                <a href="{{ cta_link }}" style="background-color: {{ cta_color|default('#3b82f6') }}"
+                    class="px-6 py-2.5 text-white rounded-full font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all text-sm">
+                    {{ cta_text }}
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button id="menu-toggle"
+                class="md:hidden p-2 text-gray-600 hover:text-blue-600 focus:outline-none transition-colors">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu"
+            class="hidden md:hidden bg-white/95 backdrop-blur-lg border-t border-gray-100 p-6 shadow-2xl absolute w-full left-0 animate-in slide-in-from-top duration-300">
+            <nav class="flex flex-col space-y-6">
+                <a href="index.html"
+                    class="text-gray-600 hover:text-blue-600 font-bold text-xl border-b border-gray-100 pb-2">Home</a>
+                {% for item in menu_items %}
+                <div class="space-y-4">
+                    {% if item.children and item.children|length > 0 %}
+                    <div class="text-gray-400 text-xs font-black uppercase tracking-widest">{{ item.label }}</div>
+                    <div class="pl-4 flex flex-col space-y-4">
+                        {% for child in item.children %}
+                        <a href="{{ child.url }}" class="text-gray-800 hover:text-blue-600 font-bold text-lg">
+                            {{ child.label }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <a href="{{ item.url }}"
+                        class="block text-gray-800 font-bold text-xl border-b border-gray-100 pb-2 hover:text-blue-600">{{
+                        item.label }}</a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                {% if cta_text and cta_link %}
+                <div class="pt-4">
+                    <a href="{{ cta_link }}" style="background-color: {{ cta_color|default('#3b82f6') }}"
+                        class="block w-full text-center py-4 text-white rounded-2xl font-black shadow-xl">
+                        {{ cta_text }}
+                    </a>
+                </div>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    <main>
+        {{ body_html|safe }}
+    </main>
+    <footer class="bg-gray-800 text-white py-8 mt-20">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; {{ created_at.year }} - Generated by StaticCMS</p>
+        </div>
+    </footer>
+    <script>
+        lucide.createIcons();
+
+        // Mobile Menu Toggle logic
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            const icon = menuToggle.querySelector('i');
+            if (mobileMenu.classList.contains('hidden')) {
+                icon.setAttribute('data-lucide', 'menu');
+            } else {
+                icon.setAttribute('data-lucide', 'x');
+            }
+            lucide.createIcons();
+        });
+    </script>
+</body>
+
+</html>

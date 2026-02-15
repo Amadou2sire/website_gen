@@ -1,0 +1,12 @@
+<div class="cta-block py-16 text-center"
+    style="background-color: {{ data.bgColor or '#2563eb' }}; color: {{ data.textColor or '#ffffff' }};">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-4">{{ data.headline }}</h2>
+        <p class="text-xl mb-8 opacity-90">{{ data.subheadline }}</p>
+        <a href="{{ data.button_link }}"
+            class="inline-block bg-white px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition shadow-md"
+            style="color: {{ data.bgColor or '#2563eb' }};">
+            {{ data.button_text }}
+        </a>
+    </div>
+</div>

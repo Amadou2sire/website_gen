@@ -1,0 +1,38 @@
+<div class="pricing-block py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div
+            class="grid grid-cols-1 md:grid-cols-{{ data.plans|length if data.plans|length < 4 else 3 }} gap-8 max-w-6xl mx-auto">
+            {% for plan in data.plans %}
+            <div
+                class="pricing-card bg-white p-8 rounded-2xl shadow-lg border-2 {% if plan.isPopular %}border-blue-500 scale-105 z-10{% else %}border-transparent{% endif %} flex flex-col">
+                {% if plan.isPopular %}
+                <span
+                    class="bg-blue-500 text-white text-xs font-bold uppercase tracking-widest py-1 px-3 rounded-full self-start mb-4">Recommended</span>
+                {% endif %}
+                <h3 class="text-2xl font-bold mb-2">{{ plan.name }}</h3>
+                <div class="mb-6">
+                    <span class="text-4xl font-extrabold">{{ plan.price }}</span>
+                    {% if '/' in plan.price == False %}
+                    <span class="text-gray-500">/mo</span>
+                    {% endif %}
+                </div>
+                <ul class="space-y-4 mb-8 flex-1">
+                    {% for feature in plan.features %}
+                    <li class="flex items-center gap-2 text-gray-600">
+                        <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                        {{ feature }}
+                    </li>
+                    {% endfor %}
+                </ul>
+                <a href="#"
+                    class="block text-center py-3 px-6 rounded-xl font-bold transition {% if plan.isPopular %}bg-blue-600 text-white hover:bg-blue-700{% else %}bg-gray-100 text-gray-800 hover:bg-gray-200{% endif %}">
+                    {{ plan.buttonText }}
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

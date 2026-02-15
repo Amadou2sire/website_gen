@@ -1,0 +1,23 @@
+<div class="testimonial-block py-20 bg-white">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold mb-12">What our users say</h2>
+        <div
+            class="grid grid-cols-1 md:grid-cols-{{ data.testimonials|length if data.testimonials|length < 4 else 3 }} gap-8">
+            {% for item in data.testimonials %}
+            <div class="testimonial-card p-8 bg-gray-50 rounded-2xl text-left border">
+                <p class="text-lg text-gray-600 mb-6 italic">"{{ item.content }}"</p>
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center font-bold text-blue-600">
+                        {{ item.author[0] }}
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900">{{ item.author }}</h4>
+                        <p class="text-sm text-gray-500">{{ item.role }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
