@@ -32,6 +32,7 @@ const Sidebar = () => {
             title: "Structure",
             items: [
                 { label: "Navigation", to: "/menus", icon: "list" },
+                { label: "UI Settings", to: "/settings", icon: "palette" },
                 { label: "Footer", to: "/menus", icon: "view_agenda" },
             ]
         },
@@ -90,8 +91,8 @@ const Sidebar = () => {
                     onClick={handleBuild}
                     disabled={isBuilding}
                     className={`w-full py-2.5 rounded-lg text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-lg active:scale-[0.98] ${isBuilding
-                            ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                            : 'bg-primary text-white hover:bg-blue-700 shadow-blue-500/20'
+                        ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                        : 'bg-primary text-white hover:bg-blue-700 shadow-blue-500/20'
                         }`}
                 >
                     <span className={`material-symbols-outlined !text-[18px] ${isBuilding ? 'animate-spin' : ''}`}>

@@ -30,6 +30,16 @@ def run_build(db: Session):
                 pass
         logo_url = menu_record.logo_url
 
+    # Fetch global UI Settings
+    ui_settings = db.query(models.Settings).first()
+    brand_primary = ui_settings.brand_primary if ui_settings else "#3b82f6"
+    brand_hover = ui_settings.brand_hover if ui_settings else "#2563eb"
+    
+    # Fallback for brand colors if settings not found but menu has them
+    if not ui_settings and menu_record:
+        brand_primary = menu_record.cta_color or brand_primary
+        brand_hover = menu_record.cta_hover_color or brand_hover
+
     # Generate pages
     for page in pages:
         # Render blocks
@@ -63,8 +73,8 @@ def run_build(db: Session):
             logo_url=logo_url,
             cta_text=menu_record.cta_text if menu_record else None,
             cta_link=menu_record.cta_link if menu_record else None,
-            cta_color=menu_record.cta_color if menu_record else "#3b82f6",
-            cta_hover_color=menu_record.cta_hover_color if menu_record else "#2563eb",
+            cta_color=brand_primary,
+            cta_hover_color=brand_hover,
             created_at=page.created_at
         )
         

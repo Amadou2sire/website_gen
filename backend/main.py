@@ -126,7 +126,6 @@ def create_menu(menu: schemas.MenuCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_menu)
     return db_menu
-
 @app.put("/api/menus/{menu_id}", response_model=schemas.MenuResponse)
 def update_menu(menu_id: int, menu: schemas.MenuUpdate, db: Session = Depends(get_db)):
     db_menu = db.query(models.Menu).filter(models.Menu.id == menu_id).first()
@@ -139,9 +138,41 @@ def update_menu(menu_id: int, menu: schemas.MenuUpdate, db: Session = Depends(ge
     db_menu.cta_text = menu.cta_text
     db_menu.cta_link = menu.cta_link
     db_menu.cta_color = menu.cta_color
+    db_menu.cta_hover_color = menu.cta_hover_color
     db.commit()
     db.refresh(db_menu)
     return db_menu
+
+# Settings Endpoints
+@app.get("/api/settings", response_model=schemas.SettingsResponse)
+def get_settings(db: Session = Depends(get_db)):
+    settings = db.query(models.Settings).first()
+    if not settings:
+        settings = models.Settings(brand_primary="#3b82f6", brand_hover="#2563eb")
+        db.add(settings)
+        db.commit()
+        db.refresh(settings)
+    return settings
+
+@app.put("/api/settings", response_model=schemas.SettingsResponse)
+def update_settings(settings_data: schemas.SettingsUpdate, db: Session = Depends(get_db)):
+    db_settings = db.query(models.Settings).first()
+    if not db_settings:
+        db_settings = models.Settings()
+        db.add(db_settings)
+    
+    db_settings.brand_primary = settings_data.brand_primary
+    db_settings.brand_hover = settings_data.brand_hover
+    db.commit()
+    db.refresh(db_settings)
+    
+    # Auto-build on save
+    try:
+        run_build(db)
+    except Exception as e:
+        print(f"Build failed during settings update: {e}")
+        
+    return db_settings
 
 @app.post("/api/upload")
 async def upload_file(file: UploadFile = File(...)):

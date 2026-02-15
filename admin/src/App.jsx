@@ -6,6 +6,7 @@ import Sidebar from './components/Sidebar';
 import PageList from './components/PageList';
 import Editor from './components/Editor';
 import MenuManager from './components/MenuManager';
+import UISettings from './components/UISettings';
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -31,6 +32,7 @@ function App() {
           <Route path="/editor/new" element={<Editor />} />
           <Route path="/editor/:id" element={<Editor />} />
           <Route path="/menus" element={<MenuManager />} />
+          <Route path="/settings" element={<UISettings />} />
         </Routes>
       </Layout>
     </Router>
