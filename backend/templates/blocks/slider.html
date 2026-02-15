@@ -19,7 +19,8 @@
                 </p>
                 {% if slide.cta_text and slide.cta_link %}
                 <a href="{{ slide.cta_link }}"
-                    class="inline-block bg-white text-gray-900 px-10 py-4 rounded-full font-bold hover:bg-gray-100 transition shadow-2xl animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
+                    class="inline-block bg-white px-8 py-3 rounded-lg font-bold transition hover:bg-gray-100 shadow-md animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300"
+                    style="color: var(--brand-primary);">
                     {{ slide.cta_text }}
                 </a>
                 {% endif %}

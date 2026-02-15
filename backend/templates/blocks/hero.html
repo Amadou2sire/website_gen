@@ -8,8 +8,8 @@
         <p class="text-xl text-gray-600 mb-8">{{ data.subheadline }}</p>
         {% if data.cta_text and data.cta_link %}
         <a href="{{ data.cta_link }}"
-            class="inline-block text-white px-8 py-3 rounded-lg font-semibold transition hover:opacity-90 shadow-lg"
-            style="background-color: {{ data.buttonColor or '#2563eb' }};">
+            class="inline-block text-white px-8 py-3 rounded-lg font-semibold transition hover-primary shadow-lg"
+            style="background-color: var(--brand-primary);">
             {{ data.cta_text }}
         </a>
         {% endif %}

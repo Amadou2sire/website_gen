@@ -5,7 +5,8 @@
             <div
                 class="feature-item p-8 border rounded-2xl hover:shadow-xl transition flex flex-col items-center text-center">
                 {% if feature.icon %}
-                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6"
+                    style="background-color: color-mix(in srgb, var(--brand-primary) 10%, white); color: var(--brand-primary)">
                     <i data-lucide="{{ feature.icon }}"></i>
                 </div>
                 {% endif %}
