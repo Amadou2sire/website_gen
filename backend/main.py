@@ -155,7 +155,7 @@ async def upload_file(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/api/build")
+@app.post("/api/generate")
 def build_site(db: Session = Depends(get_db)):
     try:
         run_build(db)
