@@ -69,3 +69,18 @@ npm run dev
 
 ##  Port Standardization
 All components communicate via port **8000**. Ensure no other applications are using this port during development.
+
+##  Git Workflows
+
+### Standard Commit Cycle
+```bash
+git add .
+git commit -m "Your descriptive message here"
+git push origin main
+```
+
+### Useful Commands
+- **Check Status**: `git status`
+- **View History**: `git log --oneline`
+- **Discard Changes**: `git checkout -- .`
+- **Pull Latest**: `git pull origin main`
