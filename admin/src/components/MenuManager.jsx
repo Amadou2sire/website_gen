@@ -88,6 +88,16 @@ const MenuManager = () => {
         setFormData({ ...formData });
     };
 
+    const handleMoveItem = (index, direction, parentItems = null) => {
+        const items = parentItems || formData.items;
+        if (direction === -1 && index === 0) return;
+        if (direction === 1 && index === items.length - 1) return;
+
+        const newIndex = index + direction;
+        [items[index], items[newIndex]] = [items[newIndex], items[index]];
+        setFormData({ ...formData });
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -151,6 +161,24 @@ const MenuManager = () => {
                                         <span className="material-symbols-outlined !text-lg">add_circle</span>
                                     </button>
                                 )}
+                                <button
+                                    type="button"
+                                    onClick={() => handleMoveItem(index, -1, items)}
+                                    disabled={index === 0}
+                                    className="p-1.5 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                                    title="Move Up"
+                                >
+                                    <span className="material-symbols-outlined !text-lg">arrow_upward</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => handleMoveItem(index, 1, items)}
+                                    disabled={index === items.length - 1}
+                                    className="p-1.5 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                                    title="Move Down"
+                                >
+                                    <span className="material-symbols-outlined !text-lg">arrow_downward</span>
+                                </button>
                                 <button
                                     type="button"
                                     onClick={() => handleRemoveItem(index, items)}
