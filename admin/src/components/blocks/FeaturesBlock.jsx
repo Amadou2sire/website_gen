@@ -29,6 +29,26 @@ const FeaturesBlock = ({ data, onChange }) => {
                 <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400">Features Configuration</h4>
             </div>
 
+            {/* Column Selector */}
+            <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Grid Columns</label>
+                <div className="flex gap-2">
+                    {[2, 3, 4, 5, 6].map(cols => (
+                        <button
+                            key={cols}
+                            type="button"
+                            onClick={() => onChange({ ...data, columns: cols })}
+                            className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${(data.columns || 3) === cols
+                                    ? 'bg-primary text-white shadow-lg shadow-primary/20'
+                                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200'
+                                }`}
+                        >
+                            {cols} Col
+                        </button>
+                    ))}
+                </div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {features.map((feature, index) => (
                     <div key={index} className="group relative border-2 border-slate-100 dark:border-slate-800 rounded-2xl bg-white dark:bg-slate-900 p-6 transition-all hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 active:scale-[0.99]">
