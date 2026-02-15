@@ -3,6 +3,11 @@ import os
 
 db_path = "cms.db"
 if os.path.exists(db_path):
+    from backend.database import engine
+    from backend import models
+    print("Ensuring all tables exist...")
+    models.Base.metadata.create_all(bind=engine)
+    
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     

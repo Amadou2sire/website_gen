@@ -62,6 +62,14 @@ class PageResponse(PageBase):
     class Config:
         from_attributes = True
 
+    @field_validator('blocks', mode='before')
+    @classmethod
+    def parse_blocks(cls, v):
+        if isinstance(v, str):
+            import json
+            return json.loads(v)
+        return v
+
 class SettingsBase(BaseModel):
     brand_primary: str = "#3b82f6"
     brand_hover: str = "#2563eb"
@@ -73,11 +81,3 @@ class SettingsResponse(SettingsBase):
     id: int
     class Config:
         from_attributes = True
-
-    @field_validator('blocks', mode='before')
-    @classmethod
-    def parse_blocks(cls, v):
-        if isinstance(v, str):
-            import json
-            return json.loads(v)
-        return v

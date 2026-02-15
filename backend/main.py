@@ -141,6 +141,13 @@ def update_menu(menu_id: int, menu: schemas.MenuUpdate, db: Session = Depends(ge
     db_menu.cta_hover_color = menu.cta_hover_color
     db.commit()
     db.refresh(db_menu)
+    
+    # Auto-build on save
+    try:
+        run_build(db)
+    except Exception as e:
+        print(f"Build failed during menu update: {e}")
+        
     return db_menu
 
 # Settings Endpoints
