@@ -33,7 +33,8 @@ const Editor = () => {
         title: '',
         blocks: [],
         meta_description: '',
-        is_published: false
+        is_published: false,
+        is_homepage: false
     });
     const [selectedBlockId, setSelectedBlockId] = useState(null);
     const [viewMode, setViewMode] = useState('desktop');
@@ -60,7 +61,8 @@ const Editor = () => {
                 title: data.title,
                 blocks: data.blocks || [],
                 meta_description: data.meta_description || '',
-                is_published: data.is_published
+                is_published: data.is_published,
+                is_homepage: data.is_homepage || false
             });
         } catch (error) {
             toast.error("Error fetching page");
@@ -224,6 +226,16 @@ const Editor = () => {
                                             value={formData.meta_description}
                                             onChange={(e) => setFormData({ ...formData, meta_description: e.target.value })}
                                         ></textarea>
+                                    </div>
+                                    <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700">
+                                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-700 dark:text-slate-300">Set as Homepage</p>
+                                        <button
+                                            type="button"
+                                            onClick={() => setFormData({ ...formData, is_homepage: !formData.is_homepage })}
+                                            className={`relative h-5 w-9 rounded-full transition-colors ${formData.is_homepage ? 'bg-amber-500' : 'bg-slate-300 dark:bg-slate-700'}`}
+                                        >
+                                            <div className={`absolute top-0.5 left-0.5 size-4 rounded-full bg-white transition-transform ${formData.is_homepage ? 'translate-x-4' : 'translate-x-0'}`}></div>
+                                        </button>
                                     </div>
                                     <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700">
                                         <p className="text-[10px] font-black uppercase tracking-widest text-slate-700 dark:text-slate-300">Published</p>
