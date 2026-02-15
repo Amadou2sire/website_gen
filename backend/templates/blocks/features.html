@@ -1,10 +1,23 @@
 <div class="features-block py-16 bg-white">
     <div class="container mx-auto px-4">
+        {% if data.section_title %}
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">{{ data.section_title }}</h2>
+            {% if data.section_subtitle %}
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">{{ data.section_subtitle }}</p>
+            {% endif %}
+        </div>
+        {% endif %}
+
         <div class="grid grid-cols-1 md:grid-cols-{{ data.columns|default(3) }} gap-8">
             {% for feature in data.features %}
             <div
                 class="feature-item p-8 border rounded-2xl hover:shadow-xl transition flex flex-col items-center text-center">
-                {% if feature.icon %}
+                {% if feature.use_image and feature.image_url %}
+                <div class="w-24 h-24 rounded-xl overflow-hidden mb-6">
+                    <img src="{{ feature.image_url }}" alt="{{ feature.title }}" class="w-full h-full object-cover">
+                </div>
+                {% elif feature.icon %}
                 <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6"
                     style="background-color: color-mix(in srgb, var(--brand-primary) 10%, white); color: var(--brand-primary)">
                     <i data-lucide="{{ feature.icon }}"></i>

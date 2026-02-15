@@ -1,12 +1,13 @@
 import React from 'react';
 import { Plus, Trash, GripVertical, Sparkles } from 'lucide-react';
 import IconPicker from '../IconPicker';
+import ImageUpload from '../ImageUpload';
 
 const FeaturesBlock = ({ data, onChange }) => {
     const features = data.features || [];
 
     const handleAddFeature = () => {
-        const newFeatures = [...features, { title: '', description: '', icon: 'zap' }];
+        const newFeatures = [...features, { title: '', description: '', icon: 'zap', image_url: '', use_image: false }];
         onChange({ ...data, features: newFeatures });
     };
 
@@ -39,13 +40,37 @@ const FeaturesBlock = ({ data, onChange }) => {
                             type="button"
                             onClick={() => onChange({ ...data, columns: cols })}
                             className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${(data.columns || 3) === cols
-                                    ? 'bg-primary text-white shadow-lg shadow-primary/20'
-                                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200'
+                                ? 'bg-primary text-white shadow-lg shadow-primary/20'
+                                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200'
                                 }`}
                         >
                             {cols} Col
                         </button>
                     ))}
+                </div>
+            </div>
+
+            {/* Block Title and Subtitle */}
+            <div className="space-y-4 bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 rounded-2xl p-6">
+                <div className="space-y-2">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Section Title (H2)</label>
+                    <input
+                        type="text"
+                        placeholder="e.g., Our Amazing Features"
+                        value={data.section_title || ''}
+                        onChange={(e) => onChange({ ...data, section_title: e.target.value })}
+                        className="w-full rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-lg font-bold py-3 px-4 focus:ring-2 focus:ring-primary outline-none transition-all"
+                    />
+                </div>
+                <div className="space-y-2">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Subtitle (Optional)</label>
+                    <input
+                        type="text"
+                        placeholder="e.g., Everything you need to succeed"
+                        value={data.section_subtitle || ''}
+                        onChange={(e) => onChange({ ...data, section_subtitle: e.target.value })}
+                        className="w-full rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm py-2.5 px-4 focus:ring-1 focus:ring-primary outline-none transition-all"
+                    />
                 </div>
             </div>
 
@@ -61,13 +86,49 @@ const FeaturesBlock = ({ data, onChange }) => {
                             <Trash size={14} />
                         </button>
 
+
                         <div className="space-y-6">
-                            {/* Icon Picker Integration */}
-                            <IconPicker
-                                value={feature.icon}
-                                onChange={(val) => handleFeatureChange(index, 'icon', val)}
-                                label={`Icon ${index + 1}`}
-                            />
+                            {/* Icon or Image Toggle */}
+                            <div className="space-y-3">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Visual Type</label>
+                                <div className="flex gap-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => handleFeatureChange(index, 'use_image', false)}
+                                        className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all ${!feature.use_image
+                                            ? 'bg-primary text-white shadow-lg'
+                                            : 'bg-slate-100 dark:bg-slate-800 text-slate-600 hover:bg-slate-200'
+                                            }`}
+                                    >
+                                        Icon
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => handleFeatureChange(index, 'use_image', true)}
+                                        className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all ${feature.use_image
+                                            ? 'bg-primary text-white shadow-lg'
+                                            : 'bg-slate-100 dark:bg-slate-800 text-slate-600 hover:bg-slate-200'
+                                            }`}
+                                    >
+                                        Image
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Conditional: Icon Picker or Image Upload */}
+                            {!feature.use_image ? (
+                                <IconPicker
+                                    value={feature.icon}
+                                    onChange={(val) => handleFeatureChange(index, 'icon', val)}
+                                    label={`Icon ${index + 1}`}
+                                />
+                            ) : (
+                                <ImageUpload
+                                    value={feature.image_url || ''}
+                                    onChange={(url) => handleFeatureChange(index, 'image_url', url)}
+                                    label={`Feature Image ${index + 1}`}
+                                />
+                            )}
 
                             <div className="space-y-4">
                                 <div className="space-y-1.5">
