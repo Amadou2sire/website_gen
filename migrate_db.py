@@ -29,6 +29,11 @@ if os.path.exists(db_path):
         print("Adding cta_color column to menus table...")
         cursor.execute("ALTER TABLE menus ADD COLUMN cta_color VARCHAR(20) DEFAULT '#3b82f6'")
         conn.commit()
+
+    if "cta_hover_color" not in columns:
+        print("Adding cta_hover_color column to menus table...")
+        cursor.execute("ALTER TABLE menus ADD COLUMN cta_hover_color VARCHAR(20) DEFAULT '#2563eb'")
+        conn.commit()
     
     # Check columns of content table
     cursor.execute("PRAGMA table_info(content)")

@@ -19,6 +19,7 @@ class MenuBase(BaseModel):
     cta_text: Optional[str] = None
     cta_link: Optional[str] = None
     cta_color: Optional[str] = "#3b82f6"
+    cta_hover_color: Optional[str] = "#2563eb"
 
 class MenuCreate(MenuBase):
     pass

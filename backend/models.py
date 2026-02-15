@@ -24,3 +24,4 @@ class Menu(Base):
     cta_text = Column(String(50), nullable=True)
     cta_link = Column(String(255), nullable=True)
     cta_color = Column(String(20), default="#3b82f6")
+    cta_hover_color = Column(String(20), default="#2563eb")

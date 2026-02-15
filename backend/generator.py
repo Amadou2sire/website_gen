@@ -64,6 +64,7 @@ def run_build(db: Session):
             cta_text=menu_record.cta_text if menu_record else None,
             cta_link=menu_record.cta_link if menu_record else None,
             cta_color=menu_record.cta_color if menu_record else "#3b82f6",
+            cta_hover_color=menu_record.cta_hover_color if menu_record else "#2563eb",
             created_at=page.created_at
         )
         

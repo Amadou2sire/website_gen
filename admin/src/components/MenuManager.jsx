@@ -12,8 +12,8 @@ const MenuManager = () => {
         logo_url: '',
         items: [],
         cta_text: '',
-        cta_link: '',
-        cta_color: '#1337ec'
+        cta_color: '#3b82f6',
+        cta_hover_color: '#2563eb'
     });
 
     useEffect(() => {
@@ -35,10 +35,9 @@ const MenuManager = () => {
         setFormData({
             title: '',
             logo_url: '',
-            items: [],
-            cta_text: '',
             cta_link: '',
-            cta_color: '#1337ec'
+            cta_color: '#3b82f6',
+            cta_hover_color: '#2563eb'
         });
     };
 
@@ -49,9 +48,9 @@ const MenuManager = () => {
             title: menu.title,
             logo_url: menu.logo_url || '',
             items: menu.items || [],
-            cta_text: menu.cta_text || '',
             cta_link: menu.cta_link || '',
-            cta_color: menu.cta_color || '#1337ec'
+            cta_color: menu.cta_color || '#3b82f6',
+            cta_hover_color: menu.cta_hover_color || '#2563eb'
         });
     };
 
@@ -92,9 +91,9 @@ const MenuManager = () => {
                 title: formData.title,
                 logo_url: formData.logo_url,
                 items: formData.items,
-                cta_text: formData.cta_text,
                 cta_link: formData.cta_link,
-                cta_color: formData.cta_color
+                cta_color: formData.cta_color,
+                cta_hover_color: formData.cta_hover_color
             };
 
             if (selectedMenu) {
@@ -253,21 +252,40 @@ const MenuManager = () => {
                                                         />
                                                     </div>
                                                 </div>
-                                                <div className="space-y-1.5">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Button Color</label>
-                                                    <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700">
-                                                        <input
-                                                            type="color"
-                                                            value={formData.cta_color}
-                                                            onChange={e => setFormData({ ...formData, cta_color: e.target.value })}
-                                                            className="w-10 h-10 border-0 p-0 bg-transparent cursor-pointer rounded-lg overflow-hidden"
-                                                        />
-                                                        <input
-                                                            type="text"
-                                                            value={formData.cta_color}
-                                                            onChange={e => setFormData({ ...formData, cta_color: e.target.value })}
-                                                            className="flex-1 bg-transparent border-none text-xs font-mono font-bold outline-none ring-0"
-                                                        />
+                                                <div className="grid grid-cols-2 gap-4">
+                                                    <div className="space-y-1.5">
+                                                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Main Color</label>
+                                                        <div className="flex items-center gap-3 p-2 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700">
+                                                            <input
+                                                                type="color"
+                                                                value={formData.cta_color}
+                                                                onChange={e => setFormData({ ...formData, cta_color: e.target.value })}
+                                                                className="w-8 h-8 border-0 p-0 bg-transparent cursor-pointer rounded-lg overflow-hidden"
+                                                            />
+                                                            <input
+                                                                type="text"
+                                                                value={formData.cta_color}
+                                                                onChange={e => setFormData({ ...formData, cta_color: e.target.value })}
+                                                                className="flex-1 bg-transparent border-none text-[10px] font-mono font-bold outline-none ring-0"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className="space-y-1.5">
+                                                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Hover Color</label>
+                                                        <div className="flex items-center gap-3 p-2 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700">
+                                                            <input
+                                                                type="color"
+                                                                value={formData.cta_hover_color}
+                                                                onChange={e => setFormData({ ...formData, cta_hover_color: e.target.value })}
+                                                                className="w-8 h-8 border-0 p-0 bg-transparent cursor-pointer rounded-lg overflow-hidden"
+                                                            />
+                                                            <input
+                                                                type="text"
+                                                                value={formData.cta_hover_color}
+                                                                onChange={e => setFormData({ ...formData, cta_hover_color: e.target.value })}
+                                                                className="flex-1 bg-transparent border-none text-[10px] font-mono font-bold outline-none ring-0"
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

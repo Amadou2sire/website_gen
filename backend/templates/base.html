@@ -21,6 +21,14 @@
             }
 
             ;
+
+            --brand-hover: {
+                    {
+                    cta_hover_color|default('#2563eb')
+                }
+            }
+
+            ;
         }
 
         body {
@@ -36,12 +44,12 @@
         }
 
         .hover-primary:hover {
-            opacity: 0.9;
+            background-color: var(--brand-hover) !important;
             filter: brightness(110%);
         }
 
         .hover-text-primary:hover {
-            color: var(--brand-primary);
+            color: var(--brand-hover);
         }
 
         .glass-header {
