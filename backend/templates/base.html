@@ -77,8 +77,6 @@
             <!-- Desktop Navigation -->
             <div class="hidden md:flex items-center gap-8">
                 <nav class="flex space-x-8 items-center">
-                    <a href="index.html"
-                        class="text-gray-600 font-semibold transition-colors hover:text-[var(--brand-primary)]">Home</a>
                     {% for item in menu_items %}
                     {% if item.children and item.children|length > 0 %}
                     <div class="relative dropdown">
@@ -124,8 +122,6 @@
         <div id="mobile-menu"
             class="hidden md:hidden bg-white/95 backdrop-blur-lg border-t border-gray-100 p-6 shadow-2xl absolute w-full left-0 animate-in slide-in-from-top duration-300">
             <nav class="flex flex-col space-y-6">
-                <a href="index.html"
-                    class="text-gray-600 font-bold text-xl border-b border-gray-100 pb-2 hover:text-[var(--brand-primary)]">Home</a>
                 {% for item in menu_items %}
                 <div class="space-y-4">
                     {% if item.children and item.children|length > 0 %}

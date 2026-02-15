@@ -49,6 +49,11 @@ if os.path.exists(db_path):
         cursor.execute("ALTER TABLE content ADD COLUMN blocks TEXT DEFAULT '[]'")
         conn.commit()
     
+    if "is_homepage" not in columns:
+        print("Adding is_homepage column to content table...")
+        cursor.execute("ALTER TABLE content ADD COLUMN is_homepage BOOLEAN DEFAULT 0")
+        conn.commit()
+    
     print("Migration check complete.")
     conn.close()
 else:

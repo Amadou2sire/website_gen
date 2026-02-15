@@ -22,6 +22,26 @@ const PageList = () => {
         }
     };
 
+    const toggleHomepage = async (pageId, currentStatus) => {
+        try {
+            // First, get the page data
+            const pageResponse = await axios.get(`http://localhost:8000/api/pages/${pageId}`);
+            const pageData = pageResponse.data;
+
+            // Update the is_homepage field
+            await axios.put(`http://localhost:8000/api/pages/${pageId}`, {
+                ...pageData,
+                is_homepage: !currentStatus
+            });
+
+            toast.success(!currentStatus ? 'Page set as homepage' : 'Homepage status removed');
+            fetchPages();
+        } catch (error) {
+            console.error("Error updating homepage status", error);
+            toast.error("Failed to update homepage status");
+        }
+    };
+
     const filteredPages = pages.filter(page => {
         const matchesSearch = page.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
             page.slug.toLowerCase().includes(searchTerm.toLowerCase());
@@ -81,6 +101,7 @@ const PageList = () => {
                                     <th className="py-4 px-6 text-sm font-bold text-slate-500 uppercase tracking-widest w-1/3">Page Title</th>
                                     <th className="py-4 px-6 text-sm font-bold text-slate-500 uppercase tracking-widest">Slug</th>
                                     <th className="py-4 px-6 text-sm font-bold text-slate-500 uppercase tracking-widest text-center">Status</th>
+                                    <th className="py-4 px-6 text-sm font-bold text-slate-500 uppercase tracking-widest text-center">Homepage</th>
                                     <th className="py-4 px-6 text-sm font-bold text-slate-500 uppercase tracking-widest text-right">Actions</th>
                                 </tr>
                             </thead>
@@ -102,11 +123,26 @@ const PageList = () => {
                                         </td>
                                         <td className="py-4 px-6 text-center">
                                             <span className={`inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider ${page.is_published
-                                                    ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
-                                                    : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
+                                                ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
+                                                : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
                                                 }`}>
                                                 {page.is_published ? 'Published' : 'Draft'}
                                             </span>
+                                        </td>
+                                        <td className="py-4 px-6 text-center">
+                                            <button
+                                                onClick={() => toggleHomepage(page.id, page.is_homepage)}
+                                                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all ${page.is_homepage
+                                                        ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 hover:bg-amber-200'
+                                                        : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-500 hover:bg-slate-200'
+                                                    }`}
+                                                title={page.is_homepage ? 'Remove as homepage' : 'Set as homepage'}
+                                            >
+                                                <span className="material-symbols-outlined !text-sm">
+                                                    {page.is_homepage ? 'home' : 'home_outline'}
+                                                </span>
+                                                {page.is_homepage ? 'Homepage' : 'Set'}
+                                            </button>
                                         </td>
                                         <td className="py-4 px-6 text-right">
                                             <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">

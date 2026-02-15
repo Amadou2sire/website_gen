@@ -47,6 +47,7 @@ class PageBase(BaseModel):
     blocks: List[Block] = []
     meta_description: Optional[str] = ""
     is_published: bool = False
+    is_homepage: bool = False
 
 class PageCreate(PageBase):
     pass

@@ -82,6 +82,20 @@ def run_build(db: Session):
         with open(os.path.join(OUTPUT_DIR, file_name), "w", encoding="utf-8") as f:
             f.write(html_content)
 
+    # Generate index.html from designated homepage
+    homepage = db.query(models.Content).filter(
+        models.Content.is_published == True,
+        models.Content.is_homepage == True
+    ).first()
+    
+    if homepage:
+        # Copy the homepage file to index.html
+        homepage_file = os.path.join(OUTPUT_DIR, f"{homepage.slug}.html")
+        index_file = os.path.join(OUTPUT_DIR, "index.html")
+        if os.path.exists(homepage_file):
+            import shutil
+            shutil.copy(homepage_file, index_file)
+
     # Generate Sitemap
     root = ET.Element("urlset", xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
     for page in pages:
