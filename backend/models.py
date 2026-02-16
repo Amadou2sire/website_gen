@@ -14,6 +14,7 @@ class Content(Base):
     is_published = Column(Boolean, default=False)
     is_homepage = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
 class Menu(Base):
     __tablename__ = "menus"
@@ -26,6 +27,7 @@ class Menu(Base):
     cta_link = Column(String(255), nullable=True)
     cta_color = Column(String(20), default="#3b82f6")
     cta_hover_color = Column(String(20), default="#2563eb")
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
 class Settings(Base):
     __tablename__ = "settings"

@@ -29,6 +29,7 @@ class MenuUpdate(MenuBase):
 
 class MenuResponse(MenuBase):
     id: int
+    updated_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True
@@ -59,6 +60,7 @@ class PageResponse(PageBase):
     id: int
     slug: str
     created_at: datetime
+    updated_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True

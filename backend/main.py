@@ -94,6 +94,7 @@ def update_page(page_id: int, page: schemas.PageUpdate, db: Session = Depends(ge
     db_page.blocks = json.dumps([b.model_dump() for b in page.blocks])
     db_page.meta_description = page.meta_description
     db_page.is_published = page.is_published
+    db_page.updated_at = func.now()
     
     db.commit()
     db.refresh(db_page)
@@ -139,6 +140,7 @@ def update_menu(menu_id: int, menu: schemas.MenuUpdate, db: Session = Depends(ge
     db_menu.cta_link = menu.cta_link
     db_menu.cta_color = menu.cta_color
     db_menu.cta_hover_color = menu.cta_hover_color
+    db_menu.updated_at = func.now()
     db.commit()
     db.refresh(db_menu)
     
@@ -200,3 +202,47 @@ def build_site(db: Session = Depends(get_db)):
         return {"status": "success", "message": "Site generated successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+# Dashboard Endpoints
+@app.get("/api/dashboard/stats")
+def get_dashboard_stats(db: Session = Depends(get_db)):
+    page_count = db.query(models.Content).count()
+    published_count = db.query(models.Content).filter(models.Content.is_published == True).count()
+    menu_count = db.query(models.Menu).count()
+    
+    return {
+        "pages": page_count,
+        "published_pages": published_count,
+        "menus": menu_count
+    }
+
+@app.get("/api/dashboard/recent")
+def get_recent_activity(db: Session = Depends(get_db)):
+    # Fetch recent pages and menus
+    recent_pages = db.query(models.Content).order_by(models.Content.updated_at.desc()).limit(5).all()
+    recent_menus = db.query(models.Menu).order_by(models.Menu.updated_at.desc()).limit(3).all()
+    
+    # Format for response
+    activity = []
+    for p in recent_pages:
+        activity.append({
+            "id": p.id,
+            "type": "page",
+            "title": p.title,
+            "date": p.updated_at or p.created_at,
+            "status": "published" if p.is_published else "draft"
+        })
+        
+    for m in recent_menus:
+        activity.append({
+            "id": m.id,
+            "type": "menu",
+            "title": f"Menu: {m.title}",
+            "date": m.updated_at,
+            "status": "published" # Menus are always "active" in this context
+        })
+        
+    # Sort combined activity by date descending
+    activity.sort(key=lambda x: x["date"], reverse=True)
+    
+    return activity[:8] # Return top 8 combined

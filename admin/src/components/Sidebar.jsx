@@ -24,7 +24,7 @@ const Sidebar = () => {
             title: "Content Management",
             items: [
                 { label: "Dashboard", to: "/", icon: "dashboard" },
-                { label: "Pages", to: "/", icon: "description" },
+                { label: "Pages", to: "/pages", icon: "description" },
                 { label: "New Page", to: "/editor/new", icon: "add_circle" },
             ]
         },

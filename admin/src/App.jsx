@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Sidebar from './components/Sidebar';
 import PageList from './components/PageList';
+import Dashboard from './components/Dashboard';
 import Editor from './components/Editor';
 import MenuManager from './components/MenuManager';
 import UISettings from './components/UISettings';
@@ -28,7 +29,8 @@ function App() {
     <Router>
       <Layout>
         <Routes>
-          <Route path="/" element={<PageList />} />
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/pages" element={<PageList />} />
           <Route path="/editor/new" element={<Editor />} />
           <Route path="/editor/:id" element={<Editor />} />
           <Route path="/menus" element={<MenuManager />} />
